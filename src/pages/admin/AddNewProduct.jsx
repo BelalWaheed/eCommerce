@@ -60,7 +60,7 @@ const AddNewProduct = () => {
 
 
   return (
-    <div className=" min-h-[calc(100vh-76px)]    max-w-4xl md:mx-auto px-4 py-8  sm:mx-7">
+    <div className=" min-h-[calc(100vh-60px)]    max-w-4xl md:mx-auto px-4 py-8  sm:mx-7">
       <form
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded-xl shadow-md space-y-6"

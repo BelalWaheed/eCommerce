@@ -15,12 +15,13 @@ import { setUserChanged } from "../../redux/adminSlices/flagsSlice";
 
 const URL = import.meta.env.VITE_URL;
 
-export function SignUp() {
+export function AddUser() {
+  const { userChanged } = useSelector((state) => state.flags);
+
   const { user, allUsers } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
-  const { userChanged } = useSelector((state) => state.flags);
 
   const validate = () => {
     const newErrors = {};
@@ -61,49 +62,35 @@ export function SignUp() {
     })
       .then((res) => res.json())
       .then((data) => {
-        localStorage.userI = data.id;
-        dispatch(setLoggedUser(data));
-
-        dispatch(setLogged(true));
-        navigate("/");
-        dispatch(resetUser());
         dispatch(setUserChanged(!userChanged));
+        dispatch(resetUser());
+        navigate("/admin/users");
       });
   };
 
   return (
-    <div className="flex items-center pb-24 justify-center min-h-screen bg-gradient-to-l from-gray-50 to-gray-100 dark:from-[#0f172a] dark:to-[#1e293b] px-4">
+    <div className="flex items-center pb-24 justify-center min-h-screen bg-gradient-to-l  from-[#0f172a] to-[#1e293b] px-4">
       <Card
         color="transparent"
         shadow={false}
-        className="p-6 rounded-xl w-full max-w-md bg-white/80 dark:bg-white/5 dark:backdrop-blur-md"
+        className="p-6 rounded-xl w-full max-w-md  bg-white/5 backdrop-blur-md"
       >
-        <Typography
-          variant="h3"
-          className="text-center font-bold text-gray-800 dark:text-white"
-        >
-          Sign Up
-        </Typography>
-
-        <Typography
-          color="gray"
-          className="mt-2 text-center text-base font-normal dark:text-gray-300"
-        >
-          Nice to meet you! Enter your details to register.
+        <Typography variant="h3" className="text-center font-bold  text-white">
+          Add User
         </Typography>
 
         <form onSubmit={handleSubmit} className="mt-8 mb-2 w-full">
           <div className="mb-6 flex flex-col gap-4">
             <div>
-              <Typography variant="h6" className="mb-1 dark:text-gray-200">
-                Your Name
+              <Typography variant="h6" className="mb-1 text-gray-200">
+                The Name
               </Typography>
               <Input
                 size="lg"
                 value={user.name}
                 onChange={(e) => dispatch(setName(e.target.value))}
                 placeholder="Belal Waheed"
-                className="!border-t-blue-gray-200 focus:!border-t-gray-900 dark:text-white"
+                className="!border-t-blue-gray-200 focus:!border-t-gray-900 text-white"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -116,15 +103,15 @@ export function SignUp() {
             </div>
 
             <div>
-              <Typography variant="h6" className="mb-1 dark:text-gray-200">
-                Your Email
+              <Typography variant="h6" className="mb-1 text-gray-200">
+                The Email
               </Typography>
               <Input
                 size="lg"
                 value={user.email}
                 onChange={(e) => dispatch(setEmail(e.target.value))}
                 placeholder="belal@example.com"
-                className="!border-t-blue-gray-200 focus:!border-t-gray-900 dark:text-white"
+                className="!border-t-blue-gray-200 focus:!border-t-gray-900 text-white"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -135,12 +122,12 @@ export function SignUp() {
                 </Typography>
               )}
             </div>
-            <div className="flex  flex-col text-gray-900 dark:text-white">
-              <Typography variant="h6" className="mb-1 dark:text-gray-200">
-                Your Gender
+            <div className="flex  flex-col  text-white">
+              <Typography variant="h6" className="mb-1 text-gray-200">
+                The Gender
               </Typography>
               <Select
-                className=" dark:text-white"
+                className=" text-white"
                 value={user.gender}
                 onChange={(e) => dispatch(setGender(e))}
               >
@@ -155,8 +142,8 @@ export function SignUp() {
             )}
 
             <div>
-              <Typography variant="h6" className="mb-1 dark:text-gray-200">
-                Password
+              <Typography variant="h6" className="mb-1 text-gray-200">
+                The Password
               </Typography>
               <Input
                 type="password"
@@ -164,7 +151,7 @@ export function SignUp() {
                 onChange={(e) => dispatch(setPassword(e.target.value))}
                 placeholder="********"
                 size="lg"
-                className="!border-t-blue-gray-200 focus:!border-t-gray-900 dark:text-white"
+                className="!border-t-blue-gray-200 focus:!border-t-gray-900 text-white"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -176,27 +163,18 @@ export function SignUp() {
               )}
             </div>
           </div>
-
           <Button
             type="submit"
             className="mt-6 bg-gradient-to-r from-blue-700 to-purple-700 text-white"
             fullWidth
           >
-            Sign Up
+            Add User
           </Button>
-
-          <Typography
-            color="gray"
-            className="mt-4 text-center font-normal dark:text-gray-400"
-          >
-            Already have an account?{" "}
-            <Link
-              to="/login"
-              className="font-medium text-gray-900 dark:text-white underline"
-            >
-              Login
-            </Link>
-          </Typography>
+          <Link to="/admin/users">
+            <Button className="mt-6  text-white" fullWidth>
+              Go Back
+            </Button>
+          </Link>
         </form>
       </Card>
     </div>

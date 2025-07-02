@@ -12,7 +12,7 @@ const flagsSlice = createSlice({
       state.productChanged = payload;
     },
     setUserChanged: (state, { payload }) => {
-      state.productChanged = payload;
+      state.userChanged = payload;
     },
   },
 });

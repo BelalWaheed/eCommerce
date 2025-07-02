@@ -8,17 +8,15 @@ const initialState = {
     gender: "",
     role: "user",
   },
-  allUsers: [{}],
 };
 
-const userSlice = createSlice({
+const editUserSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setAllUsers: (state, { payload }) => {
-      state.allUsers = payload;
+    setEditUser: (state, { payload }) => {
+      state.user = payload;
     },
-    
     setName: (state, { payload }) => {
       state.user.name = payload;
     },
@@ -37,12 +35,6 @@ const userSlice = createSlice({
   },
 });
 
-export const user = userSlice.reducer;
-export const {
-  setEmail,
-  setName,
-  setPassword,
-  setAllUsers,
-  setGender,
-  resetUser,
-} = userSlice.actions;
+export const editUser = editUserSlice.reducer;
+export const { setEmail, setName, setPassword, setGender, resetUser ,setEditUser} =
+  editUserSlice.actions;

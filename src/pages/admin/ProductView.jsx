@@ -35,7 +35,7 @@ const ProductView = () => {
 
 
   return (
-    <div className="min-h-[calc(100vh-76px)] bg-gradient-to-tr from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white px-4 py-8 flex items-center justify-center">
+    <div className="min-h-[calc(100vh-60px)] bg-gradient-to-tr from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white px-4 py-8 flex items-center justify-center">
       <Card className="w-full items-center max-w-5xl flex flex-col md:flex-row rounded-xl shadow-lg bg-[#1e293b] max-h-[calc(100vh-76px)]">
         <CardHeader
           floated={false}

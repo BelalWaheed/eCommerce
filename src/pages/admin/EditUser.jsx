@@ -1,32 +1,50 @@
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   resetUser,
   setEmail,
   setGender,
   setName,
   setPassword,
-} from "../../redux/userSlices/userSlice";
-import { useState } from "react";
-import { setLogged, setLoggedUser } from "../../redux/userSlices/profileSlice";
+} from "../../redux/adminSlices/editUserSlice";
+import { useEffect, useState } from "react";
 import { Select, Option } from "@material-tailwind/react";
 import { setUserChanged } from "../../redux/adminSlices/flagsSlice";
+import axios from "axios";
+import { setEditUser } from "../../redux/adminSlices/editUserSlice";
 
-const URL = import.meta.env.VITE_URL;
-
-export function SignUp() {
-  const { user, allUsers } = useSelector((state) => state.user);
+export default function EditUser() {
+  const URL = import.meta.env.VITE_URL;
+  const { allUsers } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.editUser);
+  const { userChanged } = useSelector((state) => state.flags);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
-  const { userChanged } = useSelector((state) => state.flags);
+  const { userid } = useParams();
+
+  async function getUserDetails() {
+    try {
+      const res = await axios.get(`${URL}/users/${userid}`);
+      if (res.status === 200) {
+        dispatch(setEditUser(res.data));
+      }
+    } catch (e) {
+      alert("Error fetching product details. Please try again later.");
+    }
+  }
+
+  useEffect(() => {
+    getUserDetails();
+  }, [userid]);
 
   const validate = () => {
     const newErrors = {};
     if (!user.name.trim()) newErrors.name = "Name is required.";
-
-    const emailExists = allUsers.some((u) => u.email === user.email);
+    const emailExists = allUsers.some(
+      (u) => u.email === user.email && u.id !== user.id
+    );
     if (emailExists) {
       setErrors({ email: "This email is already registered." });
       return;
@@ -50,60 +68,43 @@ export function SignUp() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
 
-    fetch(`${URL}/users`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(user),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        localStorage.userI = data.id;
-        dispatch(setLoggedUser(data));
-
-        dispatch(setLogged(true));
-        navigate("/");
-        dispatch(resetUser());
-        dispatch(setUserChanged(!userChanged));
-      });
+    try {
+      await axios.put(`${URL}/users/${userid}`, user);
+      dispatch(setUserChanged(!userChanged));
+      dispatch(resetUser());
+      navigate("/admin/users");
+    } catch {
+      alert("Error updating user. Please try again.");
+    }
   };
 
   return (
-    <div className="flex items-center pb-24 justify-center min-h-screen bg-gradient-to-l from-gray-50 to-gray-100 dark:from-[#0f172a] dark:to-[#1e293b] px-4">
+    <div className="flex items-center pb-24 justify-center min-h-screen bg-gradient-to-l  from-[#0f172a] to-[#1e293b] px-4">
       <Card
         color="transparent"
         shadow={false}
-        className="p-6 rounded-xl w-full max-w-md bg-white/80 dark:bg-white/5 dark:backdrop-blur-md"
+        className="p-6 rounded-xl w-full max-w-md  bg-white/5 backdrop-blur-md"
       >
-        <Typography
-          variant="h3"
-          className="text-center font-bold text-gray-800 dark:text-white"
-        >
-          Sign Up
-        </Typography>
-
-        <Typography
-          color="gray"
-          className="mt-2 text-center text-base font-normal dark:text-gray-300"
-        >
-          Nice to meet you! Enter your details to register.
+        <Typography variant="h3" className="text-center font-bold  text-white">
+          Edit User
         </Typography>
 
         <form onSubmit={handleSubmit} className="mt-8 mb-2 w-full">
           <div className="mb-6 flex flex-col gap-4">
             <div>
-              <Typography variant="h6" className="mb-1 dark:text-gray-200">
-                Your Name
+              <Typography variant="h6" className="mb-1 text-gray-200">
+                The Name
               </Typography>
               <Input
                 size="lg"
                 value={user.name}
                 onChange={(e) => dispatch(setName(e.target.value))}
                 placeholder="Belal Waheed"
-                className="!border-t-blue-gray-200 focus:!border-t-gray-900 dark:text-white"
+                className="!border-t-blue-gray-200 focus:!border-t-gray-900 text-white"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -116,15 +117,15 @@ export function SignUp() {
             </div>
 
             <div>
-              <Typography variant="h6" className="mb-1 dark:text-gray-200">
-                Your Email
+              <Typography variant="h6" className="mb-1 text-gray-200">
+                The Email
               </Typography>
               <Input
                 size="lg"
                 value={user.email}
                 onChange={(e) => dispatch(setEmail(e.target.value))}
                 placeholder="belal@example.com"
-                className="!border-t-blue-gray-200 focus:!border-t-gray-900 dark:text-white"
+                className="!border-t-blue-gray-200 focus:!border-t-gray-900 text-white"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -135,12 +136,12 @@ export function SignUp() {
                 </Typography>
               )}
             </div>
-            <div className="flex  flex-col text-gray-900 dark:text-white">
-              <Typography variant="h6" className="mb-1 dark:text-gray-200">
-                Your Gender
+            <div className="flex  flex-col  text-white">
+              <Typography variant="h6" className="mb-1 text-gray-200">
+                The Gender
               </Typography>
               <Select
-                className=" dark:text-white"
+                className=" text-white"
                 value={user.gender}
                 onChange={(e) => dispatch(setGender(e))}
               >
@@ -155,8 +156,8 @@ export function SignUp() {
             )}
 
             <div>
-              <Typography variant="h6" className="mb-1 dark:text-gray-200">
-                Password
+              <Typography variant="h6" className="mb-1 text-gray-200">
+                The Password
               </Typography>
               <Input
                 type="password"
@@ -164,7 +165,7 @@ export function SignUp() {
                 onChange={(e) => dispatch(setPassword(e.target.value))}
                 placeholder="********"
                 size="lg"
-                className="!border-t-blue-gray-200 focus:!border-t-gray-900 dark:text-white"
+                className="!border-t-blue-gray-200 focus:!border-t-gray-900 text-white"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -176,27 +177,18 @@ export function SignUp() {
               )}
             </div>
           </div>
-
           <Button
             type="submit"
             className="mt-6 bg-gradient-to-r from-blue-700 to-purple-700 text-white"
             fullWidth
           >
-            Sign Up
+            Update
           </Button>
-
-          <Typography
-            color="gray"
-            className="mt-4 text-center font-normal dark:text-gray-400"
-          >
-            Already have an account?{" "}
-            <Link
-              to="/login"
-              className="font-medium text-gray-900 dark:text-white underline"
-            >
-              Login
-            </Link>
-          </Typography>
+          <Link to="/admin/users">
+            <Button className="mt-6  text-white" fullWidth>
+              Go Back
+            </Button>
+          </Link>
         </form>
       </Card>
     </div>

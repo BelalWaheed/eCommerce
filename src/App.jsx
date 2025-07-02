@@ -18,7 +18,7 @@ function App() {
   const { logged, loggedUser } = useSelector((state) => state.profile);
   const { productChanged, userChanged } = useSelector((state) => state.flags);
 
-  async function getAllUsers() {
+    async function  getAllUsers() {
     const res = await axios.get(`${URL}/users`);
     const data = res.data;
     dispatch(setAllUsers(data));

@@ -153,7 +153,7 @@ export function ComplexNavbar() {
               </Link>
             ) : (
               <Link to="/login" className="hover:scale-125 transition-all">
-                <ShoppingCartIcon className="h-6 w-6   text-black " />
+                <ShoppingCartIcon className="h-6 w-6   text-black dark:text-white " />
               </Link>
             )}
             {cart.length > 0 && (

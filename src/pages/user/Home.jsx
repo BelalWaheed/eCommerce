@@ -1,9 +1,6 @@
 import { Link } from "react-router-dom";
 import Collections from "../../components/user/Collections";
-import { useSelector } from "react-redux";
 function Home() {
-
-
   return (
     <div className="">
       <div className=" ">
@@ -36,7 +33,7 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className="dark:bg-[#0f172a]">
+      <div className="dark:bg-[#0f172a] transition-colors">
         <Collections />
       </div>
     </div>

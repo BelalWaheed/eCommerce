@@ -1,9 +1,10 @@
 import { useSelector } from "react-redux";
 import { Button } from "@material-tailwind/react";
+import { Link, useParams } from "react-router-dom";
 
 function ViewUsers() {
   const { allUsers } = useSelector((state) => state.user);
-
+  const { userid } = useParams();
 
   return (
     <div className="min-h-screen bg-gradient-to-tr from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white px-4 py-8">
@@ -38,25 +39,17 @@ function ViewUsers() {
                       {user.role}
                     </td>
                     <td className="p-4 flex flex-wrap justify-center gap-2">
-                      <Button
-                        size="sm"
-                        color="blue"
-                        onClick={() => alert(`Add action for ${user.name}`)}
-                      >
-                        Add
-                      </Button>
-                      <Button
-                        size="sm"
-                        color="amber"
-                        onClick={() => alert(`Edit action for ${user.name}`)}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        size="sm"
-                        color="green"
-                        onClick={() => alert(`Make Admin action for ${user.name}`)}
-                      >
+                      <Link to="/admin/add-user">
+                        <Button size="sm" color="blue">
+                          Add
+                        </Button>
+                      </Link>
+                      <Link to={`/admin/edit-user/${user.id}`}>
+                        <Button size="sm" color="amber">
+                          Edit
+                        </Button>
+                      </Link>
+                      <Button size="sm" color="green">
                         Make Admin
                       </Button>
                     </td>
