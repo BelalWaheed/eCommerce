@@ -13,18 +13,33 @@ export default function Profile() {
   const { loggedUser } = useSelector((state) => state.profile);
   const [showPassword, setShowPassword] = useState(false);
 
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-l from-gray-50 to-gray-100 dark:from-[#0f172a] dark:to-[#1e293b] px-4">
       <Card className="w-full max-w-md p-6 rounded-2xl bg-white/80 dark:bg-white/5 dark:backdrop-blur-md shadow-md">
         <div className="flex flex-col items-center gap-3">
-          <Avatar
+          {loggedUser?.gender === "male" ? (
+            <Avatar
+              variant="circular"
+              size="md"
+              alt="tania andrew"
+              withBorder={true}
+              color="blue-gray"
+              className=" p-0.5"
+              src="https://i.ibb.co/JWJ9wnxY/male.png"
+            />
+          ) : (
+            <Avatar
+              variant="circular"
+              size="md"
+              alt="tania andrew"
+              withBorder={true}
+              color="blue-gray"
+              className=" p-0.5"
+              src="https://i.ibb.co/xSmDKcN4/female-avatar-girl-face-woman-user-9-svgrepo-com.png"
+            />
+          )}
 
-            variant="circular"
-            size="xl"
-            src="/public/user.png"
-            alt="User Avatar"
-            className="border-4 border-white dark:border-gray-700"
-          />
           <Typography variant="h4" className="text-gray-900 dark:text-white">
             {loggedUser?.name || "Your Name"}
           </Typography>

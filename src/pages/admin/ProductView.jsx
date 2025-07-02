@@ -33,18 +33,6 @@ const ProductView = () => {
     getProductDetails();
   }, [productid]);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
-        <div className="flex flex-col items-center space-y-6">
-          <div className="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
-          <p className="text-xl font-semibold animate-pulse">
-            Loading, please wait...
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-[calc(100vh-76px)] bg-gradient-to-tr from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white px-4 py-8 flex items-center justify-center">

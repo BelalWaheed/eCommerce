@@ -2,6 +2,7 @@ import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
+  resetUser,
   setEmail,
   setGender,
   setName,
@@ -63,6 +64,7 @@ export function SignUp() {
 
         dispatch(setLogged(true));
         navigate("/");
+        dispatch(resetUser());
       });
   };
 

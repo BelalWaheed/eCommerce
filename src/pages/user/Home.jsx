@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import Collections from "../../components/user/Collections";
+import { useSelector } from "react-redux";
 function Home() {
+
+
   return (
     <div className="">
       <div className=" ">

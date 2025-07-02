@@ -4,6 +4,7 @@ import { user } from "./userSlices/userSlice";
 import { theme } from "./userSlices/themeSlice";
 import { products } from "./userSlices/productSlice";
 import { adminAdd } from "./adminSlices/addSlice";
+import { flags } from "./adminSlices/flagsSlice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     user,
     adminAdd,
     profile,
+    flags,
   },
 });
 export default store;

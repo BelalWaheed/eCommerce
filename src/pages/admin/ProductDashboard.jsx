@@ -1,12 +1,12 @@
-import { Button, Typography } from "@material-tailwind/react";
+import { Avatar, Button, Typography } from "@material-tailwind/react";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import { setProductChanged } from "../../redux/adminSlices/flagsSlice";
 function ProductDashboard() {
   const URL = import.meta.env.VITE_URL;
-  const addNewProduct = () => {};
-
+  const dispatch = useDispatch();
   const deleteProduct = (id) => async () => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -23,6 +23,7 @@ function ProductDashboard() {
       try {
         await axios.delete(`${URL}/items/${id}`);
         Swal.fire("Deleted!", "The product has been deleted.", "success");
+        dispatch(setProductChanged(true));
       } catch (error) {
         Swal.fire("Error", "Something went wrong while deleting.", "error");
       }
@@ -30,30 +31,15 @@ function ProductDashboard() {
       Swal.fire("Cancelled", "The product is safe :)", "info");
     }
   };
-  const { products, loading } = useSelector((state) => state.products);
+  const { products } = useSelector((state) => state.products);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
-        <div className="flex flex-col items-center space-y-6">
-          <div className="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
-          <p className="text-xl font-semibold animate-pulse">
-            Loading, please wait...
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-tr from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white px-4 py-8">
       <div className="max-w-7xl mx-auto space-y-8">
         <header className="text-center">
           <Link to="/admin/addproduct">
-            <Button
-              className="mb-4 bg-blue-600 hover:bg-blue-500 text-white px
-            py-2 rounded-full transition-colors"
-            >
+            <Button className="mb-4 backdrop-blur-sm bg-blue-400/20 hover:bg-blue-500/30 border border-blue-400 text-blue-200 px-5 py-2 rounded-full transition-all shadow-md">
               Add New Product
             </Button>
           </Link>
@@ -61,8 +47,10 @@ function ProductDashboard() {
             Manage your products efficiently
           </p>
         </header>
-
-        <div className="w-full overflow-x-auto rounded-2xl shadow-lg ring-1 ring-gray-800 bg-[#1e293b]">
+        <div
+          className="w-full overflow-auto scrollbar-hidden rounded-2xl shadow-lg 
+           ring-1 ring-gray-800 bg-gradient-to-tr from-[#0f172a] via-[#1e293b] to-[#0f172a] "
+        >
           <table className="min-w-[600px] w-full table-auto">
             <thead className="bg-[#334155] text-sm text-gray-300 uppercase">
               <tr>
@@ -80,10 +68,13 @@ function ProductDashboard() {
                     className="border-t border-gray-700 hover:bg-[#2d3b52]/70 transition-colors duration-150"
                   >
                     <td className="p-4">
-                      <img
+                      <Avatar
+                        variant="circular"
+                        size="lg"
+                        alt="tania andrew"
+                        withBorder={true}
+                        color="blue-gray"
                         src={product.image}
-                        alt={product.title}
-                        className="w-12 h-12 object-cover rounded-md shadow-sm"
                       />
                     </td>
                     <td className="p-4 text-gray-100">{product.title}</td>
@@ -97,9 +88,12 @@ function ProductDashboard() {
                             View
                           </Button>
                         </Link>
-                        <Button className="px-4 py-1.5 rounded-full bg-yellow-400 hover:bg-yellow-300 text-black text-sm font-medium transition">
-                          Edit
-                        </Button>
+
+                        <Link to={`/admin/edit/${product.id}`}>
+                          <Button className="px-4 py-1.5 rounded-full bg-yellow-400 hover:bg-yellow-300 text-black text-sm font-medium transition">
+                            Edit
+                          </Button>
+                        </Link>
                         <Button
                           onClick={deleteProduct(product.id)}
                           className="px-4 py-1.5 rounded-full bg-red-600 hover:bg-red-500 text-sm font-medium transition"

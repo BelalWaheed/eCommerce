@@ -12,6 +12,7 @@ import {
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { setProductChanged } from "../../redux/adminSlices/flagsSlice";
 
 const AddNewProduct = () => {
   const dispatch = useDispatch();
@@ -47,6 +48,7 @@ const AddNewProduct = () => {
       .post(`${URL}/items`, product)
       .then(() => {
         console.log("Product added successfully:");
+        dispatch(setProductChanged(true));
         navigate("/admin/products");
       })
       .catch((error) => {
@@ -54,8 +56,11 @@ const AddNewProduct = () => {
       });
   };
 
+
+
+
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className=" min-h-[calc(100vh-76px)]    max-w-4xl md:mx-auto px-4 py-8  sm:mx-7">
       <form
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded-xl shadow-md space-y-6"
@@ -74,7 +79,6 @@ const AddNewProduct = () => {
               value={product.title}
               onChange={(e) => dispatch(setTitle(e.target.value))}
               color="black"
-              required
             />
             {errors.title && (
               <p className="text-red-500 text-sm">{errors.title}</p>
@@ -89,7 +93,6 @@ const AddNewProduct = () => {
               value={product.price}
               onChange={(e) => dispatch(setPrice(e.target.value))}
               color="black"
-              required
             />
             {errors.price && (
               <p className="text-red-500 text-sm">{errors.price}</p>
@@ -102,7 +105,6 @@ const AddNewProduct = () => {
               value={product.category}
               onChange={(e) => dispatch(setCategory(e.target.value))}
               color="black"
-              required
             />
             {errors.category && (
               <p className="text-red-500 text-sm">{errors.category}</p>
@@ -117,7 +119,6 @@ const AddNewProduct = () => {
             onChange={(e) => dispatch(setDescription(e.target.value))}
             color="black"
             rows={4}
-            required
           />
           {errors.description && (
             <p className="text-red-500 text-sm">{errors.description}</p>
@@ -131,11 +132,7 @@ const AddNewProduct = () => {
             value={product.image}
             onChange={(e) => dispatch(setImage(e.target.value))}
             color="black"
-            required
           />
-          <Typography variant="small" className="text-red-500 mt-1 ml-1">
-            It has to be 'https://url'
-          </Typography>
           {errors.image && (
             <p className="text-red-500 text-sm">{errors.image}</p>
           )}
@@ -149,7 +146,6 @@ const AddNewProduct = () => {
               value={product?.rating?.rate}
               onChange={(e) => dispatch(setRate(e.target.value))}
               color="black"
-              required
             />
             {errors.rate && (
               <p className="text-red-500 text-sm">{errors.rate}</p>
@@ -163,7 +159,6 @@ const AddNewProduct = () => {
               value={product?.rating?.count}
               onChange={(e) => dispatch(setCount(e.target.value))}
               color="black"
-              required
             />
             {errors.count && (
               <p className="text-red-500 text-sm">{errors.count}</p>

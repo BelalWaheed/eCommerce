@@ -12,6 +12,7 @@ function Cart() {
   const { cart } = useSelector((state) => state.products);
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const dispatch = useDispatch();
+  
 
   return (
     <div className="p-4 sm:p-6 min-h-screen bg-gradient-to-l from-gray-50 to-gray-100 dark:from-[#0f172a] dark:to-[#1e293b] text-gray-900 dark:text-white">

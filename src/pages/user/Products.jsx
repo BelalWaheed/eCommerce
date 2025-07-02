@@ -34,6 +34,9 @@ const starRating = (count) => {
 function Products() {
   const { products } = useSelector((state) => state.products);
   const dispatch = useDispatch();
+
+
+
   return (
     <div className="flex justify-center min-h-screen bg-gradient-to-l from-gray-50 to-gray-100 dark:from-[#0f172a] dark:to-[#1e293b] py-10">
       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 w-full max-w-7xl px-4">

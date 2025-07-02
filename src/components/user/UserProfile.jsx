@@ -32,15 +32,27 @@ export default function UserProfile() {
           color="blue-gray"
           className="flex items-center rounded-full p-0"
         >
-          <Avatar
-            variant="circular"
-            size="md"
-            alt="tania andrew"
-            withBorder={true}
-            color="blue-gray"
-            className=" p-0.5"
-            src="https://docs.material-tailwind.com/img/face-2.jpg"
-          />
+          {loggedUser?.gender === "male" ? (
+            <Avatar
+              variant="circular"
+              size="md"
+              alt="tania andrew"
+              withBorder={true}
+              color="blue-gray"
+              className=" p-0.5"
+              src="https://i.ibb.co/JWJ9wnxY/male.png"
+            />
+          ) : (
+            <Avatar
+              variant="circular"
+              size="md"
+              alt="tania andrew"
+              withBorder={true}
+              color="blue-gray"
+              className=" p-0.5"
+              src="https://i.ibb.co/xSmDKcN4/female-avatar-girl-face-woman-user-9-svgrepo-com.png"
+            />
+          )}
         </Button>
       </MenuHandler>
       <MenuList className="p-1">

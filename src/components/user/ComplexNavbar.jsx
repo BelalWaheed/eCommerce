@@ -149,7 +149,7 @@ export function ComplexNavbar() {
           <div className="relative flex items-center">
             {logged ? (
               <Link to="/cart" className="hover:scale-125 transition-all">
-                <ShoppingCartIcon className="h-6 w-6 text-black " />
+                <ShoppingCartIcon className="h-6 w-6 text-black dark:text-white " />
               </Link>
             ) : (
               <Link to="/login" className="hover:scale-125 transition-all">

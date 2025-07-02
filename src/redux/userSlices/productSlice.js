@@ -4,7 +4,18 @@ const initialState = {
   products: [],
   cart: [],
   loading: false,
-  viewProduct: {},
+  viewProduct: {
+    id: "",
+    title: "",
+    price: 0,
+    description: "",
+    category: "",
+    image: "",
+    rating: {
+      rate: 0,
+      count: 0,
+    },
+  },
 };
 const productsSlice = createSlice({
   name: "products",
@@ -47,6 +58,28 @@ const productsSlice = createSlice({
         productInCart.quantity -= 1;
       }
     },
+
+    setTitle: (state, { payload }) => {
+      state.viewProduct.title = payload;
+    },
+    setPrice: (state, { payload }) => {
+      state.viewProduct.price = payload;
+    },
+    setCategory: (state, { payload }) => {
+      state.viewProduct.category = payload;
+    },
+    setDescription: (state, { payload }) => {
+      state.viewProduct.description = payload;
+    },
+    setImage: (state, { payload }) => {
+      state.viewProduct.image = payload;
+    },
+    setRate: (state, { payload }) => {
+      state.viewProduct.rating.rate = payload;
+    },
+    setCount: (state, { payload }) => {
+      state.viewProduct.rating.count = payload;
+    },
   },
 });
 export const products = productsSlice.reducer;
@@ -58,4 +91,11 @@ export const {
   removeFromCart,
   setLoading,
   setViewProduct,
+  setTitle,
+  setPrice,
+  setCategory,
+  setDescription,
+  setImage,
+  setRate,
+  setCount,
 } = productsSlice.actions;

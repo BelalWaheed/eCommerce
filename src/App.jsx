@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { setAllUsers } from "./redux/userSlices/userSlice";
@@ -9,12 +9,14 @@ import AdminLayout from "./AdminLayout";
 import { setLoading, setProducts } from "./redux/userSlices/productSlice";
 import ErrorSection7 from "./pages/user/ErrorSection7";
 import axios from "axios";
+import SimpleNav from "./components/admin/SimpleNav";
+import { ComplexNavbar } from "./components/user/ComplexNavbar";
 
 function App() {
   const dispatch = useDispatch();
   const URL = import.meta.env.VITE_URL;
   const { logged, loggedUser } = useSelector((state) => state.profile);
-  const { products, loading } = useSelector((state) => state.products);
+  const { productChanged, userChanged } = useSelector((state) => state.flags);
 
   async function getAllUsers() {
     const res = await axios.get(`${URL}/users`);
@@ -24,7 +26,7 @@ function App() {
 
   useEffect(() => {
     getAllUsers();
-  }, [logged]);
+  }, [userChanged]);
 
   async function getProducts() {
     const res = await axios.get(`${URL}/items`);
@@ -37,7 +39,7 @@ function App() {
 
   useEffect(() => {
     getProducts();
-  }, []);
+  }, [productChanged]);
 
   async function getUserData() {
     if (localStorage.userI) {
@@ -55,27 +57,35 @@ function App() {
     getUserData();
   }, []);
 
+  const { loading } = useSelector((state) => state.products);
+  const location = useLocation();
+  const pathname = location.pathname;
+  const isAdminPath = pathname.startsWith("/admin");
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
-        <div className="flex flex-col items-center space-y-6">
-          <div className="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
-          <p className="text-xl font-semibold animate-pulse">
-            Loading, please wait...
-          </p>
+      <div className="min-h-[calc(100vh-60px)] bg-gradient-to-l from-[#0f172a] to-[#1e293b] transition-transform duration-300">
+        {isAdminPath ? <SimpleNav /> : <ComplexNavbar />}
+
+        <div className="flex items-center justify-center h-[calc(100vh-60px)] bg-gradient-to-l from-[#0f172a] to-[#1e293b] text-white">
+          <div className="flex flex-col items-center space-y-6">
+            <div className="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+            <p className="text-xl font-semibold animate-pulse">
+              Loading, please wait...
+            </p>
+          </div>
         </div>
       </div>
     );
   }
+  const isAdmin = loggedUser?.role === "admin";
 
   return (
     <Routes>
       <Route path="/*" element={<UserLayout />} />
       <Route
         path="/admin/*"
-        element={
-          loggedUser?.role === "admin" ? <AdminLayout /> : <ErrorSection7 />
-        }
+        element={isAdmin ? <AdminLayout /> : <ErrorSection7 />}
       />
     </Routes>
   );

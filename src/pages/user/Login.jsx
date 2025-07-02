@@ -2,7 +2,11 @@ import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { setEmail, setPassword } from "../../redux/userSlices/userSlice";
+import {
+  resetUser,
+  setEmail,
+  setPassword,
+} from "../../redux/userSlices/userSlice";
 import { setLogged, setLoggedUser } from "../../redux/userSlices/profileSlice";
 
 export function Login() {
@@ -47,7 +51,9 @@ export function Login() {
     dispatch(setLogged(true));
     document.activeElement?.blur(); // to remove the focus becouse there is a consle problem
     navigate("/");
+    dispatch(resetUser());
   };
+
 
   return (
     <div className="flex items-center pb-24 justify-center min-h-screen bg-gradient-to-l from-gray-50 to-gray-100 dark:bg-gradient-to-l dark:from-[#0f172a] dark:to-[#1e293b] px-4">
