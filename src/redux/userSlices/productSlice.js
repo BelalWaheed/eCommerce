@@ -80,6 +80,9 @@ const productsSlice = createSlice({
     setCount: (state, { payload }) => {
       state.viewProduct.rating.count = payload;
     },
+    resetCart: (state) => {
+      state.cart = [];
+    },
   },
 });
 export const products = productsSlice.reducer;
@@ -98,4 +101,5 @@ export const {
   setImage,
   setRate,
   setCount,
+  resetCart,
 } = productsSlice.actions;

@@ -6,7 +6,11 @@ import { setAllUsers } from "./redux/userSlices/userSlice";
 import { setLogged, setLoggedUser } from "./redux/userSlices/profileSlice";
 import UserLayout from "./UserLayout";
 import AdminLayout from "./AdminLayout";
-import { setLoading, setProducts } from "./redux/userSlices/productSlice";
+import {
+  resetCart,
+  setLoading,
+  setProducts,
+} from "./redux/userSlices/productSlice";
 import ErrorSection7 from "./pages/user/ErrorSection7";
 import axios from "axios";
 import SimpleNav from "./components/admin/SimpleNav";
@@ -18,7 +22,7 @@ function App() {
   const { logged, loggedUser } = useSelector((state) => state.profile);
   const { productChanged, userChanged } = useSelector((state) => state.flags);
 
-    async function  getAllUsers() {
+  async function getAllUsers() {
     const res = await axios.get(`${URL}/users`);
     const data = res.data;
     dispatch(setAllUsers(data));
@@ -56,6 +60,9 @@ function App() {
   useEffect(() => {
     getUserData();
   }, [userChanged]);
+  useEffect(() => {
+    dispatch(resetCart());
+  }, [logged]);
 
   const { loading } = useSelector((state) => state.products);
   const location = useLocation();
