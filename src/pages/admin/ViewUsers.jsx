@@ -1,10 +1,45 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@material-tailwind/react";
 import { Link, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
+import axios from "axios";
+import { setUserChanged } from "../../redux/adminSlices/flagsSlice";
 
 function ViewUsers() {
   const { allUsers } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const { userid } = useParams();
+  const URL = import.meta.env.VITE_URL;
+
+  const deleteUser = async (id, role) => {
+    if (role === "admin") {
+      Swal.fire("Not Allowed", "You cannot delete an admin user.", "warning");
+      return;
+    }
+
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This user will be permanently deleted.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axios.delete(`${URL}/users/${id}`);
+        Swal.fire("Deleted!", "The user has been deleted.", "success");
+        dispatch(setUserChanged(true));
+      } catch (error) {
+        Swal.fire("Error", "Failed to delete user.", "error");
+      }
+    } else {
+      Swal.fire("Cancelled", "The user is safe.", "info");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-tr from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white px-4 py-8">
@@ -49,6 +84,16 @@ function ViewUsers() {
                           Edit
                         </Button>
                       </Link>
+                      
+                      <Button
+                        size="sm"
+                        color="red"
+                        onClick={() => deleteUser(user.id, user.role)}
+                        disabled={user.role === "admin"}
+                        className={user.role === "admin" ? "opacity-50 " : ""}
+                      >
+                        Delete
+                      </Button>
                       <Button size="sm" color="green">
                         Make Admin
                       </Button>
