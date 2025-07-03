@@ -68,7 +68,7 @@ const EditProduct = () => {
       .put(`${URL}/items/${productid}`, viewProduct)
       .then(() => {
         console.log("Product added successfully:");
-        dispatch(setProductChanged(true));
+        dispatch(setProductChanged(!productChanged));
         navigate("/admin/products");
       })
       .catch((error) => {

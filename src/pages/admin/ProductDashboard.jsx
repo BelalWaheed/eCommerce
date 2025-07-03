@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { setProductChanged } from "../../redux/adminSlices/flagsSlice";
 function ProductDashboard() {
+  const {productChanged}=useSelector((state) => state.flags);
   const URL = import.meta.env.VITE_URL;
   const dispatch = useDispatch();
   const deleteProduct = (id) => async () => {
@@ -23,7 +24,7 @@ function ProductDashboard() {
       try {
         await axios.delete(`${URL}/items/${id}`);
         Swal.fire("Deleted!", "The product has been deleted.", "success");
-        dispatch(setProductChanged(true));
+        dispatch(setProductChanged(!productChanged));
       } catch (error) {
         Swal.fire("Error", "Something went wrong while deleting.", "error");
       }

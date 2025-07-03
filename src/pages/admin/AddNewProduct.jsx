@@ -15,6 +15,8 @@ import { useNavigate } from "react-router-dom";
 import { setProductChanged } from "../../redux/adminSlices/flagsSlice";
 
 const AddNewProduct = () => {
+  const { productChanged } = useSelector((state) => state.flags);
+  
   const dispatch = useDispatch();
   const { product } = useSelector((state) => state.adminAdd);
   const navigate = useNavigate();
@@ -48,7 +50,7 @@ const AddNewProduct = () => {
       .post(`${URL}/items`, product)
       .then(() => {
         console.log("Product added successfully:");
-        dispatch(setProductChanged(true));
+        dispatch(setProductChanged(!productChanged));
         navigate("/admin/products");
       })
       .catch((error) => {
