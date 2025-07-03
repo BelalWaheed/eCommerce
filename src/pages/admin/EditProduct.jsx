@@ -38,7 +38,6 @@ const EditProduct = () => {
 
   useEffect(() => {
     getProductDetails();
-    console.log("Fetching product details for ID:", productid);
   }, [productid]);
 
   const validate = () => {
@@ -77,9 +76,6 @@ const EditProduct = () => {
       });
   };
 
-
-
-  
   return (
     <div className=" min-h-[calc(100vh-60px)]    max-w-4xl md:mx-auto px-4 py-8  sm:mx-7">
       <form

@@ -55,7 +55,7 @@ function App() {
 
   useEffect(() => {
     getUserData();
-  }, []);
+  }, [userChanged]);
 
   const { loading } = useSelector((state) => state.products);
   const location = useLocation();
@@ -64,10 +64,10 @@ function App() {
 
   if (loading) {
     return (
-      <div className="min-h-[calc(100vh-60px)] bg-gradient-to-l from-[#0f172a] to-[#1e293b] transition-transform duration-300">
+      <div className="min-h-[calc(100vh-60px)] bg-gradient-to-l from-gray-50 to-gray-100 dark:from-[#0f172a] dark:to-[#1e293b] ">
         {isAdminPath ? <SimpleNav /> : <ComplexNavbar />}
 
-        <div className="flex items-center justify-center h-[calc(100vh-60px)] bg-gradient-to-l from-[#0f172a] to-[#1e293b] text-white">
+        <div className="flex items-center justify-center h-[calc(100vh-60px)] bg-gradient-to-l from-gray-50 to-gray-100 dark:from-[#0f172a] dark:to-[#1e293b] dark:text-white">
           <div className="flex flex-col items-center space-y-6">
             <div className="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
             <p className="text-xl font-semibold animate-pulse">
