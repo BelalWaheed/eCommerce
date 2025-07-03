@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { setProductChanged } from "../../redux/adminSlices/flagsSlice";
 function ProductDashboard() {
-  const {productChanged}=useSelector((state) => state.flags);
+  const { productChanged } = useSelector((state) => state.flags);
   const URL = import.meta.env.VITE_URL;
   const dispatch = useDispatch();
   const deleteProduct = (id) => async () => {
@@ -34,19 +34,18 @@ function ProductDashboard() {
   };
   const { products } = useSelector((state) => state.products);
 
-
   return (
     <div className="min-h-screen bg-gradient-to-tr from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white px-4 py-8">
       <div className="max-w-7xl mx-auto space-y-8">
         <header className="text-center">
+          <h1 className="text-3xl font-bold mb-2">
+            Manage your products efficiently
+          </h1>
           <Link to="/admin/addproduct">
-            <Button className="mb-4 backdrop-blur-sm bg-blue-400/20 hover:bg-blue-500/30 border border-blue-400 text-blue-200 px-5 py-2 rounded-full transition-all shadow-md">
+            <Button className="m-4 backdrop-blur-sm bg-blue-400/20 hover:bg-blue-500/30 border border-blue-400 text-blue-200 px-5 py-2 rounded-full transition-all shadow-md">
               Add New Product
             </Button>
           </Link>
-          <p className="text-gray-400 text-sm sm:text-base">
-            Manage your products efficiently
-          </p>
         </header>
         <div
           className="w-full overflow-auto scrollbar-hidden rounded-2xl shadow-lg 

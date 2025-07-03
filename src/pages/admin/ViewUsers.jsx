@@ -7,6 +7,7 @@ import { setUserChanged } from "../../redux/adminSlices/flagsSlice";
 
 function ViewUsers() {
   const { allUsers } = useSelector((state) => state.user);
+  const { userChanged } = useSelector((state) => state.flags);
   const dispatch = useDispatch();
   const { userid } = useParams();
   const URL = import.meta.env.VITE_URL;
@@ -32,7 +33,7 @@ function ViewUsers() {
       try {
         await axios.delete(`${URL}/users/${id}`);
         Swal.fire("Deleted!", "The user has been deleted.", "success");
-        dispatch(setUserChanged(true));
+        dispatch(setUserChanged(!userChanged));
       } catch (error) {
         Swal.fire("Error", "Failed to delete user.", "error");
       }
@@ -49,6 +50,12 @@ function ViewUsers() {
           <p className="text-gray-400 text-sm sm:text-base">
             View and manage registered users
           </p>
+
+          <Link to="/admin/add-user">
+            <Button className="mt-7 backdrop-blur-sm bg-blue-400/20 hover:bg-blue-500/30 border border-blue-400 text-blue-200 px-5 py-2 rounded-full transition-all shadow-md">
+              Add New User
+            </Button>
+          </Link>
         </header>
 
         <div className="overflow-auto scrollbar-hidden rounded-2xl shadow-lg ring-1 ring-gray-800 bg-[#1e293b]">
@@ -70,31 +77,33 @@ function ViewUsers() {
                   >
                     <td className="p-4 text-gray-100">{user.name}</td>
                     <td className="p-4 text-gray-100">{user.email}</td>
-                    <td className="p-4 text-green-400 font-medium">
+                    <td className="p-4 text-emerald-400 font-medium">
                       {user.role}
                     </td>
                     <td className="p-4 flex flex-wrap justify-center gap-2">
-                      <Link to="/admin/add-user">
-                        <Button size="sm" color="blue">
-                          Add
-                        </Button>
-                      </Link>
                       <Link to={`/admin/edit-user/${user.id}`}>
-                        <Button size="sm" color="amber">
+                        <Button className="px-4 py-1.5 rounded-full bg-yellow-400 hover:bg-yellow-300 text-black text-sm font-medium transition">
                           Edit
                         </Button>
                       </Link>
-                      
+
                       <Button
                         size="sm"
-                        color="red"
                         onClick={() => deleteUser(user.id, user.role)}
                         disabled={user.role === "admin"}
-                        className={user.role === "admin" ? "opacity-50 " : ""}
+                        className={
+                          user.role === "admin"
+                            ? "opacity-50 "
+                            : "px-4 py-1.5 rounded-full bg-red-600 hover:bg-red-500 text-sm font-medium transition"
+                        }
                       >
                         Delete
                       </Button>
-                      <Button size="sm" color="green">
+
+                      <Button
+                        size="sm"
+                        className="px-4 py-1.5 rounded-full bg-teal-600 hover:bg-teal-500 text-white text-sm font-medium transition"
+                      >
                         Make Admin
                       </Button>
                     </td>
